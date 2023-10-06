@@ -1,32 +1,35 @@
-// import { useContext } from "react";
-
 import { Link } from "react-router-dom";
 import Navbar from "./Shared/Navbar";
+import { AuthContext } from "../Provider/AuthProvider";
+import { useContext } from "react";
 
 
 
 const Register = () => {
+    const { createUser } = useContext(AuthContext);
 
-    // const { createUser } = useContext(AuthContext);
- 
-
-
-    const handleRegister = e =>{
+    const handleRegister = e => {
         e.preventDefault();
-        const name = e.target.name.value;
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        console.log(name, email, password);
-   
-     
-      // crete user in firebase
+        console.log(e.currentTarget);
+        const form = new FormData(e.currentTarget);
+       
+
+        const name = form.get('name');
+        const photo = form.get('photo');
+        const email = form.get('email');
+        const password = form.get('password');
+        const accepted =  form.get('terms');
+        console.log(name, photo, email, password, accepted);
+
+
+        //createUser
         createUser(email, password)
-        .then(result => {
-            console.log(result.user);
+            .then(result => {
+            console.log(result.user)
         })
-        .catch(error => {
-            console.error(error);
-        })
+         .catch(error =>{
+            console.error(error)
+         })
     }
 
 
@@ -62,10 +65,10 @@ const Register = () => {
           </label>
     
     
-          <input type="text"
+          <input type="photo"
            placeholder="Enter your photo url" 
            className="input input-bordered" 
-           name="name" required />
+           name="photo" required />
     
         </div>
 
@@ -96,11 +99,9 @@ const Register = () => {
     
     
     
-          {/* <label className="label">
-            <a href="#" className="label-text-alt link text-red-400 font-semibold link-hover">Forgot password?</a>
-          </label> */}
-          <div className="">
-           <input className="mr-48 mt-5 ml-10" type="checkbox" name="terms" id="terms"/>
+       
+          <div>
+           <input className="mr-48 mt-5 ml-20" type="checkbox" name="terms" id="terms"/>
           <label className="textarea" htmlFor="terms">Accept our <a href="#">Terms and Condition</a></label>
           </div>
           </div>
